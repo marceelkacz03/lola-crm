@@ -1,0 +1,61 @@
+# Folder Structure
+
+```text
+root/
+  src/
+    app/
+      (auth)/login
+      (app)/dashboard
+      (app)/accounts
+      (app)/deals
+      (app)/events
+      (app)/activities
+      (app)/reports
+      (app)/admin
+      api/
+        accounts
+        deals
+        events
+        activities
+        reports/weekly
+        reminders/daily
+        export/[entity]
+        admin/users/[id]/role
+    components/
+      ui/
+      layout/
+        role-manager.tsx
+      dashboard/
+      accounts/
+      deals/
+      events/
+      activities/
+    lib/
+      api.ts
+      auth.ts
+      csv.ts
+      format.ts
+      google-calendar.ts
+      logger.ts
+      queries.ts
+      roles.ts
+      validation.ts
+      supabase/
+        admin.ts
+        client.ts
+        config.ts
+        server.ts
+  supabase/sql/
+    001_schema.sql
+    002_rls_policies.sql
+    003_reporting.sql
+  docs/
+    FOLDER_STRUCTURE.md
+    API_ROUTES.md
+    GOOGLE_CALENDAR_INTEGRATION.md
+    RLS_OVERVIEW.md
+    DEPLOYMENT.md
+  .env.example
+  middleware.ts
+  package.json
+```

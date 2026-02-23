@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --canvas: #120101;
+  --ink: #fffdf8;
+  --muted: #f0d7bf;
+  --line: #fff1e280;
+  --accent: #d90614;
+  --panel: #1b0505;
+}
+
+html,
+body {
+  background:
+    radial-gradient(circle at 8% -10%, rgba(217, 6, 20, 0.25) 0%, rgba(217, 6, 20, 0) 35%),
+    radial-gradient(circle at 100% 0%, rgba(246, 232, 209, 0.08) 0%, rgba(246, 232, 209, 0) 40%),
+    linear-gradient(180deg, #230606 0%, var(--canvas) 60%);
+  color: var(--ink);
+  -webkit-text-size-adjust: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+th,
+td,
+label,
+input,
+select,
+textarea,
+button,
+a,
+li,
+p {
+  color: inherit;
+}
+
+* {
+  border-color: var(--line);
+}
+
+::selection {
+  background: rgba(217, 6, 20, 0.35);
+  color: #fcf8f0;
+}
+
+.app-shell {
+  min-height: 100vh;
+}
+
+main > :not(header) {
+  animation: rise-in 420ms ease both;
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
