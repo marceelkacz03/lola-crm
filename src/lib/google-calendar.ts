@@ -22,7 +22,11 @@ type GoogleCalendarEvent = {
 
 const resolveCalendarAuth = () => {
   const clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
-  const privateKey = process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n");
+  let privateKey = process.env.GOOGLE_PRIVATE_KEY?.trim();
+  if (privateKey?.startsWith("\"") && privateKey.endsWith("\"")) {
+    privateKey = privateKey.slice(1, -1);
+  }
+  privateKey = privateKey?.replace(/\\n/g, "\n");
 
   if (!clientEmail || !privateKey) {
     return null;
