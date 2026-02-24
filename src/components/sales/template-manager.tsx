@@ -74,10 +74,19 @@ export const TemplateManager = ({ templates, editable }: TemplateManagerProps) =
 
       <ul className="space-y-2">
         {templates.map((template) => (
-          <li key={template.id} className="rounded-md border border-line bg-black/20 p-3">
-            <p className="font-medium">{template.title}</p>
-            <p className="text-xs text-muted">Typ: {template.type}</p>
-            <p className="mt-2 whitespace-pre-wrap text-sm text-muted">{template.content}</p>
+          <li key={template.id} className="rounded-md border border-line bg-black/20">
+            <details className="group">
+              <summary className="cursor-pointer list-none px-3 py-3 font-medium">
+                <div className="flex items-center justify-between gap-3">
+                  <span>{template.title}</span>
+                  <span className="text-xs text-muted group-open:hidden">Rozwin</span>
+                </div>
+              </summary>
+              <div className="border-t border-line px-3 py-3">
+                <p className="text-xs text-muted">Typ: {template.type}</p>
+                <p className="mt-2 whitespace-pre-wrap text-sm text-muted">{template.content}</p>
+              </div>
+            </details>
           </li>
         ))}
       </ul>

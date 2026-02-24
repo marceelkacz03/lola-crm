@@ -38,6 +38,7 @@ export const InteractionTimeline = ({ accounts, templates, timeline, editable }:
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const [selectedTemplateId, setSelectedTemplateId] = useState<string>("");
   const [noteValue, setNoteValue] = useState<string>("");
   const [filterAccountId, setFilterAccountId] = useState<string>("");
@@ -58,11 +59,12 @@ export const InteractionTimeline = ({ accounts, templates, timeline, editable }:
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!editable) return;
+    const formEl = event.currentTarget;
 
     setLoading(true);
     setError(null);
 
-    const form = new FormData(event.currentTarget);
+    const form = new FormData(formEl);
     const payload = {
       account_id: String(form.get("account_id") || ""),
       type: String(form.get("type") || "note"),
@@ -82,9 +84,28 @@ export const InteractionTimeline = ({ accounts, templates, timeline, editable }:
       return;
     }
 
-    event.currentTarget.reset();
+    formEl.reset();
     setNoteValue("");
     setSelectedTemplateId("");
+    router.refresh();
+  };
+
+  const onDelete = async (interactionId: string) => {
+    if (!editable || deletingId) return;
+    const confirmed = window.confirm("Usunac ten wpis z timeline?");
+    if (!confirmed) return;
+
+    setDeletingId(interactionId);
+    const response = await fetch(`/api/interactions?id=${encodeURIComponent(interactionId)}`, {
+      method: "DELETE"
+    });
+    setDeletingId(null);
+
+    if (!response.ok) {
+      window.alert("Nie udalo sie usunac wpisu.");
+      return;
+    }
+
     router.refresh();
   };
 
@@ -151,6 +172,18 @@ export const InteractionTimeline = ({ accounts, templates, timeline, editable }:
             <p className="mt-2 whitespace-pre-wrap text-sm text-muted">{item.note}</p>
             {item.next_followup_date ? (
               <p className="mt-1 text-xs text-muted">Nastepny follow-up: {item.next_followup_date}</p>
+            ) : null}
+            {editable ? (
+              <div className="mt-3">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => onDelete(item.id)}
+                  disabled={Boolean(deletingId)}
+                >
+                  {deletingId === item.id ? "Usuwanie..." : "Usun"}
+                </Button>
+              </div>
             ) : null}
           </li>
         ))}

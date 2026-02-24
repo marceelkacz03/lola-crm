@@ -33,67 +33,30 @@ export default async function AccountsPage() {
       ) : null}
 
       <Card>
-        <div className="space-y-3 md:hidden">
+        <ul className="space-y-3">
           {accounts?.map((account) => (
-            <div key={account.id} className="rounded-lg border border-line bg-black/20 p-3">
-              <p className="font-medium">{account.name}</p>
-              <div className="mt-2 space-y-1 text-xs text-muted">
-                <p>Typ: {accountTypeLabel(account.type as AccountType)}</p>
-                <p>Kontakt: {account.contact_person ?? "-"}</p>
-                <p>E-mail: {account.email ?? "-"}</p>
-                <p>Telefon: {account.phone ?? "-"}</p>
-                <p>Zrodlo: {accountSourceLabel(account.source as AccountSource)}</p>
-                <p>Status: {salesStatusLabel(account.sales_status as SalesStatus)}</p>
-                <p>Wartosc: {account.estimated_value ?? "-"}</p>
-                <p>Nastepny kontakt: {account.next_followup_date ?? "-"}</p>
-              </div>
-              <div className="mt-3">
-                <AccountSalesQuickEdit
-                  accountId={account.id}
-                  status={account.sales_status as SalesStatus}
-                  estimatedValue={account.estimated_value ? Number(account.estimated_value) : null}
-                  nextFollowupDate={account.next_followup_date}
-                  editable={editable}
-                />
-              </div>
-              {editable ? (
-                <div className="mt-2">
-                  <AccountDeleteButton accountId={account.id} accountName={account.name} editable={editable} />
-                </div>
-              ) : null}
-            </div>
-          ))}
-        </div>
+            <li key={account.id} className="rounded-lg border border-line bg-black/20">
+              <details className="group">
+                <summary className="cursor-pointer list-none px-3 py-3 font-medium">
+                  <div className="flex items-center justify-between gap-3">
+                    <span>{account.name}</span>
+                    <span className="text-xs text-muted group-open:hidden">Rozwin</span>
+                  </div>
+                </summary>
 
-        <div className="hidden overflow-x-auto md:block">
-          <table className="w-full min-w-[1280px] text-left text-sm">
-            <thead className="text-xs uppercase tracking-wide text-muted">
-              <tr>
-                <th className="py-2">Nazwa</th>
-                <th>Typ</th>
-                <th>Kontakt</th>
-                <th>E-mail</th>
-                <th>Telefon</th>
-                <th>Zrodlo</th>
-                <th>Status</th>
-                <th>Wartosc</th>
-                <th>Nastepny kontakt</th>
-                <th>Szybka edycja</th>
-              </tr>
-            </thead>
-            <tbody>
-              {accounts?.map((account) => (
-                <tr key={account.id} className="border-t border-line align-top">
-                  <td className="py-2 font-medium">{account.name}</td>
-                  <td>{accountTypeLabel(account.type as AccountType)}</td>
-                  <td>{account.contact_person ?? "-"}</td>
-                  <td>{account.email ?? "-"}</td>
-                  <td>{account.phone ?? "-"}</td>
-                  <td>{accountSourceLabel(account.source as AccountSource)}</td>
-                  <td>{salesStatusLabel(account.sales_status as SalesStatus)}</td>
-                  <td>{account.estimated_value ?? "-"}</td>
-                  <td>{account.next_followup_date ?? "-"}</td>
-                  <td className="min-w-[340px] py-2">
+                <div className="border-t border-line px-3 py-3">
+                  <div className="space-y-1 text-xs text-muted">
+                    <p>Typ: {accountTypeLabel(account.type as AccountType)}</p>
+                    <p>Kontakt: {account.contact_person ?? "-"}</p>
+                    <p>E-mail: {account.email ?? "-"}</p>
+                    <p>Telefon: {account.phone ?? "-"}</p>
+                    <p>Zrodlo: {accountSourceLabel(account.source as AccountSource)}</p>
+                    <p>Status: {salesStatusLabel(account.sales_status as SalesStatus)}</p>
+                    <p>Wartosc: {account.estimated_value ?? "-"}</p>
+                    <p>Nastepny kontakt: {account.next_followup_date ?? "-"}</p>
+                  </div>
+
+                  <div className="mt-3">
                     <AccountSalesQuickEdit
                       accountId={account.id}
                       status={account.sales_status as SalesStatus}
@@ -101,17 +64,18 @@ export default async function AccountsPage() {
                       nextFollowupDate={account.next_followup_date}
                       editable={editable}
                     />
-                    {editable ? (
-                      <div className="mt-2">
-                        <AccountDeleteButton accountId={account.id} accountName={account.name} editable={editable} />
-                      </div>
-                    ) : null}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                  </div>
+
+                  {editable ? (
+                    <div className="mt-2">
+                      <AccountDeleteButton accountId={account.id} accountName={account.name} editable={editable} />
+                    </div>
+                  ) : null}
+                </div>
+              </details>
+            </li>
+          ))}
+        </ul>
       </Card>
     </div>
   );

@@ -55,3 +55,27 @@ export const POST = async (request: Request) =>
 
     return NextResponse.json(data, { status: 201 });
   });
+
+export const DELETE = async (request: Request) =>
+  withApiError(async () => {
+    const auth = await requireApiRole(["ADMIN", "MANAGER"]);
+    if (auth.error) return auth.error;
+
+    const id = new URL(request.url).searchParams.get("id");
+    if (!id) {
+      return jsonError("Missing interaction id", 422);
+    }
+
+    const { data, error } = await auth.supabase
+      .from("client_interactions")
+      .delete()
+      .eq("id", id)
+      .select("id")
+      .single();
+
+    if (error || !data) {
+      return jsonError(error?.message ?? "Interaction not found", 400);
+    }
+
+    return NextResponse.json({ id: data.id, ok: true });
+  });
