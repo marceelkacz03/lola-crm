@@ -18,7 +18,8 @@ body {
     radial-gradient(circle at 100% 0%, rgba(246, 232, 209, 0.08) 0%, rgba(246, 232, 209, 0) 40%),
     linear-gradient(180deg, #230606 0%, var(--canvas) 60%);
   color: var(--ink);
-  -webkit-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100% !important;
+  text-size-adjust: 100% !important;
 }
 
 h1,

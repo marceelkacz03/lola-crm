@@ -18,11 +18,11 @@ export default async function DashboardPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="font-[var(--font-heading)] text-4xl">Panel</h1>
+          <h1 className="font-[var(--font-heading)] text-3xl sm:text-4xl">Panel</h1>
           <p className="text-sm text-muted">Dla tej roli dostepny jest glownie kalendarz wydarzen.</p>
         </div>
         <Card>
-          <h2 className="font-[var(--font-heading)] text-2xl">Kalendarz</h2>
+          <h2 className="font-[var(--font-heading)] text-xl sm:text-2xl">Kalendarz</h2>
           <p className="mt-2 text-sm text-muted">Przejdz do kalendarza, aby sprawdzic i dodawac wydarzenia.</p>
           <Link
             href="/events"
@@ -46,7 +46,7 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-[var(--font-heading)] text-4xl">Panel sprzedawcy</h1>
+        <h1 className="font-[var(--font-heading)] text-3xl sm:text-4xl">Panel sprzedawcy</h1>
       </div>
 
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -57,7 +57,7 @@ export default async function DashboardPage() {
 
       <section className="grid gap-4 xl:grid-cols-2">
         <Card>
-          <h2 className="font-[var(--font-heading)] text-2xl">Dzisiaj do zrobienia</h2>
+          <h2 className="font-[var(--font-heading)] text-xl sm:text-2xl">Dzisiaj do zrobienia</h2>
           <div className="mt-4 grid gap-4 md:grid-cols-2">
             <div>
               <p className="mb-2 text-xs uppercase tracking-wide text-muted">Po terminie</p>
@@ -91,7 +91,7 @@ export default async function DashboardPage() {
         </Card>
 
         <Card>
-          <h2 className="font-[var(--font-heading)] text-2xl">Szybkie przejscie</h2>
+          <h2 className="font-[var(--font-heading)] text-xl sm:text-2xl">Szybkie przejscie</h2>
           <div className="mt-3 flex flex-wrap gap-3">
             <Link
               href="/accounts"
@@ -111,7 +111,7 @@ export default async function DashboardPage() {
 
       <section className="grid gap-4 xl:grid-cols-2">
         <Card>
-          <h2 className="mb-3 font-[var(--font-heading)] text-2xl">Timeline kontaktu</h2>
+          <h2 className="mb-3 font-[var(--font-heading)] text-xl sm:text-2xl">Timeline kontaktu</h2>
           <InteractionTimeline
             accounts={accounts.map((row) => ({ id: row.id, name: row.name }))}
             templates={templates.map((row) => ({ id: row.id, title: row.title, content: row.content }))}
@@ -121,7 +121,7 @@ export default async function DashboardPage() {
         </Card>
 
         <Card>
-          <h2 className="mb-3 font-[var(--font-heading)] text-2xl">Szablony wiadomosci i ofert</h2>
+          <h2 className="mb-3 font-[var(--font-heading)] text-xl sm:text-2xl">Szablony wiadomosci i ofert</h2>
           <TemplateManager
             templates={templates.map((row) => ({ id: row.id, title: row.title, type: row.type, content: row.content }))}
             editable={canEditSales}
