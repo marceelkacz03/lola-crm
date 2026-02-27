@@ -15,11 +15,13 @@ export const getSellerKpis = async () => {
   const rows = accounts ?? [];
   const newThisWeek = rows.filter((row) => String(row.created_at).slice(0, 10) >= weekStart).length;
   const offersSent = rows.filter((row) => row.sales_status === "offer_sent").length;
+  const inNegotiation = rows.filter((row) => row.sales_status === "negotiation").length;
   const completed = rows.filter((row) => row.sales_status === "won").length;
 
   return {
     newThisWeek,
     offersSent,
+    inNegotiation,
     completed
   };
 };

@@ -49,9 +49,10 @@ export default async function DashboardPage() {
         <h1 className="font-[var(--font-heading)] text-3xl sm:text-4xl">Panel sprzedawcy</h1>
       </div>
 
-      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <StatCard label="Nowi klienci (tydzien)" value={String(kpis.newThisWeek)} />
-        <StatCard label="Wyslane oferty" value={String(kpis.offersSent)} />
+        <StatCard label="Oferta wyslana" value={String(kpis.offersSent)} />
+        <StatCard label="Negocjacje" value={String(kpis.inNegotiation)} />
         <StatCard label="Zrealizowane" value={String(kpis.completed)} />
       </section>
 
