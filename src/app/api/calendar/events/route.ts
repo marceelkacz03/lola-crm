@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import { jsonError, requireApiRole, withApiError } from "@/lib/api";
 import { createGoogleCalendarEvent, listGoogleCalendarEvents } from "@/lib/google-calendar";
+import type { AccountType } from "@/lib/types";
 
 const calendarEventSchema = z.object({
   title: z.string().min(2),
@@ -15,6 +16,12 @@ const calendarEventSchema = z.object({
   location: z.string().optional(),
   description: z.string().optional()
 });
+
+const resolveAccountType = (eventType?: "corporate" | "wedding" | "private" | "other"): AccountType => {
+  if (eventType === "corporate") return "company";
+  if (eventType === "wedding" || eventType === "private") return "private";
+  return "company";
+};
 
 export const GET = async () =>
   withApiError(async () => {
@@ -50,5 +57,44 @@ export const POST = async (request: Request) =>
       location: parsed.data.location,
       description: descriptionChunks.join("\n")
     });
-    return NextResponse.json(result, { status: 201 });
+
+    const normalizedTitle = parsed.data.title.trim();
+    const { data: existingAccount } = await auth.supabase
+      .from("accounts")
+      .select("id")
+      .eq("name", normalizedTitle)
+      .maybeSingle();
+
+    let createdAccountId: string | null = null;
+
+    if (!existingAccount) {
+      const { data: createdAccount, error: accountError } = await auth.supabase
+        .from("accounts")
+        .insert({
+          type: resolveAccountType(parsed.data.eventType),
+          name: normalizedTitle,
+          source: "other",
+          sales_status: "new",
+          estimated_value: parsed.data.budget ?? null,
+          next_followup_date: parsed.data.eventDate || null
+        })
+        .select("id")
+        .single();
+
+      if (accountError) {
+        return jsonError(accountError.message, 400);
+      }
+
+      createdAccountId = createdAccount.id;
+    }
+
+    return NextResponse.json(
+      {
+        ...result,
+        accountSynced: true,
+        accountCreated: Boolean(createdAccountId),
+        accountId: createdAccountId ?? existingAccount?.id ?? null
+      },
+      { status: 201 }
+    );
   });
