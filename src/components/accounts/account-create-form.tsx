@@ -7,7 +7,21 @@ import { Button } from "@/components/ui/button";
 import { Input, Select } from "@/components/ui/form";
 import { salesStatusLabel } from "@/lib/i18n-pl";
 
-export const AccountCreateForm = () => {
+type AccountInitialValues = {
+  name?: string;
+  type?: string;
+  contact_person?: string;
+  email?: string;
+  phone?: string;
+  source?: string;
+};
+
+type AccountCreateFormProps = {
+  initialValues?: AccountInitialValues;
+  onSuccess?: () => void;
+};
+
+export const AccountCreateForm = ({ initialValues, onSuccess }: AccountCreateFormProps) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -49,6 +63,7 @@ export const AccountCreateForm = () => {
 
       formEl.reset();
       router.refresh();
+      onSuccess?.();
     } finally {
       submitLockRef.current = false;
       setLoading(false);
@@ -57,16 +72,16 @@ export const AccountCreateForm = () => {
 
   return (
     <form className="grid gap-3 md:grid-cols-2" onSubmit={onSubmit}>
-      <Input name="name" placeholder="Nazwa klienta" required />
-      <Select name="type" defaultValue="company">
+      <Input name="name" placeholder="Nazwa klienta" defaultValue={initialValues?.name ?? ""} required />
+      <Select name="type" defaultValue={initialValues?.type ?? "company"}>
         <option value="company">Firma</option>
         <option value="private">Osoba prywatna</option>
         <option value="wedding_planner">Konsultant slubny</option>
       </Select>
-      <Input name="contact_person" placeholder="Osoba kontaktowa" />
-      <Input name="email" placeholder="E-mail" type="email" />
-      <Input name="phone" placeholder="Telefon" />
-      <Select name="source" defaultValue="networking">
+      <Input name="contact_person" placeholder="Osoba kontaktowa" defaultValue={initialValues?.contact_person ?? ""} />
+      <Input name="email" placeholder="E-mail" type="email" defaultValue={initialValues?.email ?? ""} />
+      <Input name="phone" placeholder="Telefon" defaultValue={initialValues?.phone ?? ""} />
+      <Select name="source" defaultValue={initialValues?.source ?? "networking"}>
         <option value="internal_base">Baza wewnetrzna</option>
         <option value="own_portfolio">Wlasne portfolio</option>
         <option value="planner">Konsultant slubny</option>

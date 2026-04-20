@@ -1,5 +1,6 @@
 import { AccountGroupsExplorer } from "@/components/accounts/account-groups-explorer";
 import { AccountCreateForm } from "@/components/accounts/account-create-form";
+import { AccountEnrichUrlButton } from "@/components/accounts/account-enrich-url-button";
 import { Card } from "@/components/ui/card";
 import { requireAnyRole } from "@/lib/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
@@ -28,7 +29,10 @@ export default async function AccountsPage({
 
       {editable ? (
         <Card>
-          <h2 className="mb-4 font-[var(--font-heading)] text-2xl">Dodaj klienta</h2>
+          <div className="mb-4 flex items-center justify-between gap-3">
+            <h2 className="font-[var(--font-heading)] text-2xl">Dodaj klienta</h2>
+            <AccountEnrichUrlButton />
+          </div>
           <AccountCreateForm />
         </Card>
       ) : null}
