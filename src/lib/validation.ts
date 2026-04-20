@@ -78,3 +78,39 @@ export const templateSchema = z.object({
   type: z.enum(["first_contact", "followup", "offer", "other"]),
   content: z.string().min(5)
 });
+
+const aiAngle = z.enum(["extravaganza", "intimate", "cultural_bridge", "milestone"]);
+
+export const enrichResponseSchema = z.object({
+  name: z.string().min(1),
+  type: z.enum(["company", "private", "wedding_planner"]).default("company"),
+  contact_person: z.string().nullable().optional(),
+  email: z.string().email().nullable().optional(),
+  phone: z.string().nullable().optional(),
+  source: z.enum(["internal_base", "own_portfolio", "planner", "networking", "other"]).default("networking"),
+  needs_review: z.boolean().default(false)
+});
+
+export const researchResponseSchema = z.object({
+  score: z.number().int().min(1).max(10),
+  angle: aiAngle,
+  summary: z.string().min(1),
+  why: z.string().min(1),
+  needs_review: z.boolean().default(false)
+});
+
+export const emailDraftSchema = z.object({
+  subject: z.string().min(1),
+  body: z.string().min(1),
+  alt_subjects: z.array(z.string()).default([]),
+  needs_review: z.boolean().default(false)
+});
+
+export const followupItemSchema = z.object({
+  draft_type: z.enum(["followup_1", "followup_2", "followup_3"]),
+  subject: z.string().min(1),
+  body: z.string().min(1),
+  days_after: z.number().int().min(1)
+});
+
+export const followupSequenceSchema = z.array(followupItemSchema).length(3);

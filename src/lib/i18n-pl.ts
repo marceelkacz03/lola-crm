@@ -2,6 +2,9 @@ import type {
   AccountSource,
   AccountType,
   ActivityType,
+  AiAngle,
+  AiDraftStatus,
+  AiDraftType,
   AppRole,
   SalesStatus,
   DealEventType,
@@ -90,4 +93,33 @@ export const salesStatusLabel = (status: SalesStatus) =>
       won: "Zrealizowane",
       lost: "Przegrany"
     } satisfies Record<SalesStatus, string>
+  )[status];
+
+export const aiAngleLabel = (angle: AiAngle) =>
+  (
+    {
+      extravaganza: "Extravaganza",
+      intimate: "Kameralnie",
+      cultural_bridge: "Cultural Bridge",
+      milestone: "Milestone"
+    } satisfies Record<AiAngle, string>
+  )[angle];
+
+export const aiDraftTypeLabel = (type: AiDraftType) =>
+  (
+    {
+      first_contact: "Pierwszy kontakt",
+      followup_1: "Follow-up 1",
+      followup_2: "Follow-up 2",
+      followup_3: "Follow-up 3"
+    } satisfies Record<AiDraftType, string>
+  )[type];
+
+export const aiDraftStatusLabel = (status: AiDraftStatus) =>
+  (
+    {
+      draft: "Szkic",
+      sent: "Wysłano",
+      skipped: "Pominięto"
+    } satisfies Record<AiDraftStatus, string>
   )[status];

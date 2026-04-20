@@ -99,3 +99,36 @@ export type Activity = {
   created_by: string;
   created_at: string;
 };
+
+export type AiAngle = "extravaganza" | "intimate" | "cultural_bridge" | "milestone";
+export type AiDraftType = "first_contact" | "followup_1" | "followup_2" | "followup_3";
+export type AiDraftStatus = "draft" | "sent" | "skipped";
+export type AiPromptKey =
+  | "enrich_lead"
+  | "research_lead"
+  | "first_email_pl"
+  | "first_email_en"
+  | "followup_sequence_pl"
+  | "followup_sequence_en";
+
+export type AiResearch = {
+  score: number;
+  angle: AiAngle;
+  summary: string;
+  why: string;
+  needs_review: boolean;
+};
+
+export type AiEmailDraft = {
+  id: string;
+  lead_id: string;
+  draft_type: AiDraftType;
+  language: "pl" | "en";
+  subject: string;
+  body: string;
+  alt_subjects: string[] | null;
+  status: AiDraftStatus;
+  scheduled_for: string | null;
+  sent_at: string | null;
+  created_at: string;
+};
