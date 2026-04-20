@@ -5,6 +5,7 @@ import { useState } from "react";
 import { AccountAiResearch } from "@/components/accounts/account-ai-research";
 import { AccountDeleteButton } from "@/components/accounts/account-delete-button";
 import { AccountEmailDraftButton } from "@/components/accounts/account-email-draft-button";
+import { AccountFollowupPanel } from "@/components/accounts/account-followup-panel";
 import { AccountSalesQuickEdit } from "@/components/accounts/account-sales-quick-edit";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/form";
@@ -44,6 +45,68 @@ const normalizeSearchValue = (value: string) =>
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, " ")
     .trim();
+
+const AccountCardDetails = ({ account, editable }: { account: AccountRow; editable: boolean }) => {
+  const [firstEmailSentId, setFirstEmailSentId] = useState<string | null>(null);
+
+  return (
+    <div className="border-t border-line px-3 py-3">
+      <div className="space-y-1 text-xs text-muted">
+        <p>Typ: {accountTypeLabel(account.type as AccountType)}</p>
+        <p>Kontakt: {account.contact_person ?? "-"}</p>
+        <p>E-mail: {account.email ?? "-"}</p>
+        <p>Telefon: {account.phone ?? "-"}</p>
+        <p>Zrodlo: {accountSourceLabel(account.source as AccountSource)}</p>
+        <p>Status: {salesStatusLabel(account.sales_status as SalesStatus)}</p>
+        <p>Wartosc: {account.estimated_value ?? "-"}</p>
+        <p>Nastepny kontakt: {account.next_followup_date ?? "-"}</p>
+      </div>
+
+      <div className="mt-3">
+        <AccountSalesQuickEdit
+          accountId={account.id}
+          status={account.sales_status as SalesStatus}
+          estimatedValue={account.estimated_value ? Number(account.estimated_value) : null}
+          nextFollowupDate={account.next_followup_date}
+          editable={editable}
+        />
+      </div>
+
+      {editable ? (
+        <AccountAiResearch
+          accountId={account.id}
+          initialResearch={account.ai_research ?? null}
+          initialScore={account.ai_lead_score ?? null}
+          initialAngle={account.ai_angle ?? null}
+        />
+      ) : null}
+
+      {editable ? (
+        <div className="mt-2">
+          <AccountEmailDraftButton
+            accountId={account.id}
+            accountEmail={account.email}
+            onSent={(id) => setFirstEmailSentId(id)}
+          />
+        </div>
+      ) : null}
+
+      {editable ? (
+        <AccountFollowupPanel
+          accountId={account.id}
+          accountEmail={account.email}
+          firstEmailSentId={firstEmailSentId}
+        />
+      ) : null}
+
+      {editable ? (
+        <div className="mt-2">
+          <AccountDeleteButton accountId={account.id} accountName={account.name} editable={editable} />
+        </div>
+      ) : null}
+    </div>
+  );
+};
 
 export const AccountGroupsExplorer = ({ accounts, editable }: AccountGroupsExplorerProps) => {
   const [openGroup, setOpenGroup] = useState<AccountFilter | null>(null);
@@ -144,52 +207,7 @@ export const AccountGroupsExplorer = ({ accounts, editable }: AccountGroupsExplo
                       </div>
                     </summary>
 
-                    <div className="border-t border-line px-3 py-3">
-                      <div className="space-y-1 text-xs text-muted">
-                        <p>Typ: {accountTypeLabel(account.type as AccountType)}</p>
-                        <p>Kontakt: {account.contact_person ?? "-"}</p>
-                        <p>E-mail: {account.email ?? "-"}</p>
-                        <p>Telefon: {account.phone ?? "-"}</p>
-                        <p>Zrodlo: {accountSourceLabel(account.source as AccountSource)}</p>
-                        <p>Status: {salesStatusLabel(account.sales_status as SalesStatus)}</p>
-                        <p>Wartosc: {account.estimated_value ?? "-"}</p>
-                        <p>Nastepny kontakt: {account.next_followup_date ?? "-"}</p>
-                      </div>
-
-                      <div className="mt-3">
-                        <AccountSalesQuickEdit
-                          accountId={account.id}
-                          status={account.sales_status as SalesStatus}
-                          estimatedValue={account.estimated_value ? Number(account.estimated_value) : null}
-                          nextFollowupDate={account.next_followup_date}
-                          editable={editable}
-                        />
-                      </div>
-
-                      {editable ? (
-                        <AccountAiResearch
-                          accountId={account.id}
-                          initialResearch={account.ai_research ?? null}
-                          initialScore={account.ai_lead_score ?? null}
-                          initialAngle={account.ai_angle ?? null}
-                        />
-                      ) : null}
-
-                      {editable ? (
-                        <div className="mt-2">
-                          <AccountEmailDraftButton
-                            accountId={account.id}
-                            accountEmail={account.email}
-                          />
-                        </div>
-                      ) : null}
-
-                      {editable ? (
-                        <div className="mt-2">
-                          <AccountDeleteButton accountId={account.id} accountName={account.name} editable={editable} />
-                        </div>
-                      ) : null}
-                    </div>
+                    <AccountCardDetails account={account} editable={editable} />
                   </details>
                 </li>
               ))}
