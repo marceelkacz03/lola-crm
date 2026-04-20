@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import { AccountAiResearch } from "@/components/accounts/account-ai-research";
 import { AccountDeleteButton } from "@/components/accounts/account-delete-button";
+import { AccountEmailDraftButton } from "@/components/accounts/account-email-draft-button";
 import { AccountSalesQuickEdit } from "@/components/accounts/account-sales-quick-edit";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/form";
@@ -172,6 +173,15 @@ export const AccountGroupsExplorer = ({ accounts, editable }: AccountGroupsExplo
                           initialScore={account.ai_lead_score ?? null}
                           initialAngle={account.ai_angle ?? null}
                         />
+                      ) : null}
+
+                      {editable ? (
+                        <div className="mt-2">
+                          <AccountEmailDraftButton
+                            accountId={account.id}
+                            accountEmail={account.email}
+                          />
+                        </div>
                       ) : null}
 
                       {editable ? (
