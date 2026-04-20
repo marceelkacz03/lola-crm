@@ -18,7 +18,7 @@ export const POST = async (
 
     const { data: account, error: fetchError } = await auth.supabase
       .from("accounts")
-      .select("id,name,type,contact_person,email,notes,ai_research_updated_at")
+      .select("id,name,type,contact_person,email,ai_research_updated_at")
       .eq("id", accountId)
       .single();
 
@@ -38,8 +38,7 @@ export const POST = async (
         name: (account.name as string) ?? "",
         type: (account.type as string) ?? "",
         contact_person: (account.contact_person as string) ?? "",
-        url: (account.email as string) ?? "",
-        notes: (account.notes as string) ?? ""
+        url: (account.email as string) ?? ""
       },
       leadId: accountId
     });
