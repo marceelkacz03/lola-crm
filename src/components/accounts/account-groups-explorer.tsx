@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 
+import { AccountAiResearch } from "@/components/accounts/account-ai-research";
 import { AccountDeleteButton } from "@/components/accounts/account-delete-button";
 import { AccountSalesQuickEdit } from "@/components/accounts/account-sales-quick-edit";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
 import { accountSourceLabel, accountTypeLabel, salesStatusLabel } from "@/lib/i18n-pl";
-import type { AccountSource, AccountType, SalesStatus } from "@/lib/types";
+import type { AccountSource, AccountType, AiResearch, SalesStatus } from "@/lib/types";
 
 type AccountRow = {
   id: string;
@@ -21,6 +22,9 @@ type AccountRow = {
   sales_status: string;
   estimated_value: number | null;
   next_followup_date: string | null;
+  ai_research?: AiResearch | null;
+  ai_lead_score?: number | null;
+  ai_angle?: string | null;
 };
 
 type AccountGroupsExplorerProps = {
@@ -160,6 +164,15 @@ export const AccountGroupsExplorer = ({ accounts, editable }: AccountGroupsExplo
                           editable={editable}
                         />
                       </div>
+
+                      {editable ? (
+                        <AccountAiResearch
+                          accountId={account.id}
+                          initialResearch={account.ai_research ?? null}
+                          initialScore={account.ai_lead_score ?? null}
+                          initialAngle={account.ai_angle ?? null}
+                        />
+                      ) : null}
 
                       {editable ? (
                         <div className="mt-2">

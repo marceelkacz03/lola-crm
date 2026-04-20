@@ -15,7 +15,7 @@ export default async function AccountsPage({
 
   const { data: accounts } = await supabase
     .from("accounts")
-    .select("id,name,type,contact_person,email,phone,source,sales_status,estimated_value,next_followup_date,created_at")
+    .select("id,name,type,contact_person,email,phone,source,sales_status,estimated_value,next_followup_date,created_at,ai_research,ai_lead_score,ai_angle")
     .order("created_at", { ascending: false });
 
   const editable = user.role === "ADMIN" || user.role === "MANAGER";
